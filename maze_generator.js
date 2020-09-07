@@ -170,9 +170,11 @@ function drawMaze() {
 };
 
 
-// Resize tile map to fit nicely in the width of the screen, then redraw
+// Resize tile map to fit nicely in the screen, then redraw the maze
 function resize(event) {
-  let cell_px_ratio = Math.floor((document.documentElement.clientWidth - size) / N_cols);
+  let min_span = (document.documentElement.clientWidth < document.documentElement.clientHeight) ?
+                  document.documentElement.clientWidth : document.documentElement.clientHeight;
+  let cell_px_ratio = Math.floor((min_span - size) / N_cols);
   context.canvas.width = cell_px_ratio*N_cols;
   context.canvas.height = cell_px_ratio*N_rows;
   drawMaze();
@@ -180,11 +182,13 @@ function resize(event) {
 
 
 //////////////////////////////////////////////////////
+// Main
+
 // generate_random_maze(maze, 0.7);
 // generate_arbitrary_maze(maze);
 
+// Slowly draw a maze using BFS, then DFS, then random.
 (async() => {
-
   console.log("BFS");
   await generate_maze1(maze, "BFS");
   await sleep(1000);
