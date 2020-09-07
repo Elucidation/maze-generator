@@ -3,8 +3,8 @@
 
 //////////////////////////////////////////////////////
 // Maze / Tile Array
-var N_rows = 35;
-var N_cols = 51;
+var N_rows = 25;
+var N_cols = 31;
 var WALL = 1;
 var OPEN = 0;
 
@@ -33,6 +33,8 @@ async function generate_maze(inp_maze) {
   for (var i = inp_maze.length - 1; i >= 0; i--) {
     inp_maze[i].fill(WALL);
   }
+  // Create entrance opening in top left
+  inp_maze[0][1] = OPEN;  
   let visited = create_2d_array(N_rows, N_cols, 0);
   // Random starting point
   // let rand_row = Math.floor(Math.random() * (N_rows-2))+1;
@@ -69,6 +71,11 @@ async function generate_maze(inp_maze) {
       stack.push(neighbor);
     }
   }
+
+  // Create exit opening in bottom right
+  inp_maze[inp_maze.length-2][inp_maze[0].length-2] = OPEN;
+  inp_maze[inp_maze.length-1][inp_maze[0].length-2] = OPEN;
+  resize();
 }
 
 function get4Neighbors(curr, inp_maze, visited) {
