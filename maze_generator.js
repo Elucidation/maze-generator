@@ -134,15 +134,26 @@ var context = document.querySelector("canvas").getContext("2d");
 size = 32; // px per cell
 buffer.canvas.height = N_rows * size;
 buffer.canvas.width = N_cols * size;
-WALL_COLOR = "#000000";
-OPEN_COLOR = "#ffffff";
+ERROR_COLOR = "#ff0fff";
 
 function drawMaze() {
   for (var row_idx = N_rows - 1; row_idx >= 0; row_idx--) {
     for (var col_idx = N_cols - 1; col_idx >= 0; col_idx--) {
       let cell = maze[row_idx][col_idx];
-      buffer.fillStyle = (cell == 1) ? WALL_COLOR : OPEN_COLOR;
-      buffer.fillRect(col_idx * size, row_idx * size, size, size);
+      let tile;
+      switch (cell) {
+        case OPEN:
+          tile = tiles.open[0];
+          buffer.drawImage(tile, col_idx * size, row_idx * size, size, size)
+          break;
+        case WALL:
+          tile = tiles.wall[0];
+          buffer.drawImage(tile, col_idx * size, row_idx * size, size, size)
+          break;
+        default:
+          buffer.fillStyle = ERROR_COLOR;
+          buffer.fillRect(col_idx * size, row_idx * size, size, size);
+      }
     }
   }
   context.drawImage(buffer.canvas, 0, 0, buffer.canvas.width, buffer.canvas.height, 
@@ -160,6 +171,18 @@ function resize(event) {
   drawMaze();
 }
 
+/////
+// Load tile images
+function loadImage(src)
+{
+    let image = new Image();
+    image.src = src;
+    return image;
+}
+var tiles = {'open':[], 'wall':[]}
+tiles.open.push(loadImage('tiles_32px/open_01.png'))
+tiles.wall.push(loadImage('tiles_32px/wall_01.png'))
+// Note, we don't check that image is loaded yet, so this may break live...
 
 //////////////////////////////////////////////////////
 // Main
@@ -168,6 +191,7 @@ resize();
 
 // Slowly draw random maze
 (async() => {
+  await sleep_ms(500); // Wait a little before generating maze
   await generate_maze(maze);
 })();
 
