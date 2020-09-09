@@ -3,8 +3,8 @@
 
 //////////////////////////////////////////////////////
 // Maze / Tile Array
-var N_rows = 25;
-var N_cols = 31;
+var N_rows = 15;
+var N_cols = 21;
 var WALL = 1;
 var OPEN = 0;
 
@@ -131,7 +131,7 @@ function get8WallNeighborCount(pos, inp_maze) {
 // Graphics
 var buffer = document.createElement("canvas").getContext("2d");
 var context = document.querySelector("canvas").getContext("2d");
-size = 32; // px per cell
+size = 96; // px per cell
 buffer.canvas.height = N_rows * size;
 buffer.canvas.width = N_cols * size;
 ERROR_COLOR = "#ff0fff";
@@ -180,8 +180,8 @@ function loadImage(src)
     return image;
 }
 var tiles = {'open':[], 'wall':[]}
-tiles.open.push(loadImage('tiles_32px/open_01.png'))
-tiles.wall.push(loadImage('tiles_32px/wall_01.png'))
+tiles.open.push(loadImage('tiles_96px/open_01.png'))
+tiles.wall.push(loadImage('tiles_96px/wall_01.png'))
 // Note, we don't check that image is loaded yet, so this may break live...
 
 //////////////////////////////////////////////////////
